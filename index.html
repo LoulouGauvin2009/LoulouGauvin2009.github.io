@@ -246,6 +246,23 @@
       }
       @media (prefers-reduced-motion: reduce) {
       }
+
+      .launch-date {
+        margin: 0.9rem auto 0;
+        max-width: 30rem;
+        font-size: 1.05rem;
+        font-weight: 700;
+        line-height: 1.5;
+        color: var(--ink);
+      }
+      .countdown {
+        margin: 0.45rem auto 0;
+        font-family: "Baloo 2", "Nunito", system-ui, sans-serif;
+        font-size: 1.25rem;
+        font-weight: 800;
+        letter-spacing: 0.02em;
+        color: var(--water);
+      }
       footer {
         position: relative;
         z-index: 2;
@@ -300,8 +317,9 @@
       <svg class="title-wave reveal reveal-d2" viewBox="0 0 132 12" fill="none" aria-hidden="true">
         <path d="M2 7 Q 12 1, 22 7 T 42 7 T 62 7 T 82 7 T 102 7 T 122 7 T 142 7" stroke="#0090e8" stroke-width="3" stroke-linecap="round" transform="translate(-5 0)" />
       </svg>
-      <p class="slogan reveal reveal-d2">Vous voulez un détergent qui garde la fraîcheur? Vous voulez un détergent qui enlève les plis? Bubule fait tout cela!</p>
       <p class="soon reveal reveal-d3">On prépare quelque chose de propre. Le site de Bubule arrive bientôt. Repasse nous voir!</p>
+      <p class="launch-date reveal reveal-d3">Le vrai site arrive le <strong>mardi 1<sup>er</sup> décembre 2026 à 16 h 25</strong> (heure de l'Est).</p>
+      <p class="countdown reveal reveal-d4" id="countdown" aria-live="polite"></p>
       <div class="badges reveal reveal-d4">
         <p class="eco-badge"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20 4C11 4 4 8 4 15c0 2 .6 3.6 1.5 5 .4-3.5 2-7 5-9.5C13.5 7.5 17 5.5 20 4Z" fill="#2e9e4f"/><path d="M20 4C11 4 4 8 4 15c0 2 .6 3.6 1.5 5 .4-3.5 2-7 5-9.5C13.5 7.5 17 5.5 20 4Z" stroke="#1e7a38" stroke-width="1.2" stroke-linejoin="round"/><path d="M6 20C9 15 13 11 19 6" stroke="#1e7a38" stroke-width="1.4" stroke-linecap="round"/></svg>100&nbsp;% écologique et québécois</p>
         <p class="made-badge"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 21s-7-4.6-7-10a7 7 0 0 1 14 0c0 5.4-7 10-7 10Z" fill="#fff" opacity="0.9"/><circle cx="12" cy="11" r="2.6" fill="#0072ce"/></svg>Fait maison à Granby, Québec</p>
@@ -340,8 +358,21 @@
         function check() {
           if (Date.now() >= LAUNCH) { window.location.replace('./website_index.html'); }
         }
+        function countdown() {
+          var el = document.getElementById('countdown');
+          if (!el) { return; }
+          var diff = LAUNCH - Date.now();
+          if (diff <= 0) { el.textContent = 'C\'est le moment !'; return; }
+          var days = Math.floor(diff / 86400000);
+          var hours = Math.floor(diff % 86400000 / 3600000);
+          var mins = Math.floor(diff % 3600000 / 60000);
+          var secs = Math.floor(diff % 60000 / 1000);
+          el.textContent = 'Plus que ' + days + ' j ' + hours + ' h ' + mins + ' min ' + secs + ' s';
+        }
         check();
+        countdown();
         setInterval(check, 30000);
+        setInterval(countdown, 1000);
       })();
     </script>
   </body>
