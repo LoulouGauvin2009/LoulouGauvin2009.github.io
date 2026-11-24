@@ -256,12 +256,37 @@
         color: var(--ink);
       }
       .countdown {
-        margin: 0.45rem auto 0;
+        display: flex;
+        justify-content: center;
+        gap: 0.6rem;
+        margin: 0.9rem auto 0;
+      }
+      .count-unit {
+        min-width: 4.5rem;
+        padding: 0.65rem 0.5rem 0.6rem;
+        background: rgba(255, 255, 255, 0.88);
+        border: 1px solid rgba(255, 255, 255, 0.95);
+        border-radius: 0.9rem;
+        box-shadow: 0 6px 18px rgba(0, 84, 150, 0.12);
+        text-align: center;
+      }
+      .count-num {
+        display: block;
         font-family: "Baloo 2", "Nunito", system-ui, sans-serif;
-        font-size: 1.25rem;
+        font-size: 1.75rem;
         font-weight: 800;
-        letter-spacing: 0.02em;
-        color: var(--water);
+        line-height: 1;
+        color: var(--ink);
+        font-variant-numeric: tabular-nums;
+      }
+      .count-label {
+        display: block;
+        margin-top: 0.35rem;
+        font-size: 0.68rem;
+        font-weight: 800;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--ink-soft);
       }
       footer {
         position: relative;
@@ -319,7 +344,12 @@
       </svg>
       <p class="soon reveal reveal-d3">On prépare quelque chose de propre. Le site de Bubule arrive bientôt. Repasse nous voir!</p>
       <p class="launch-date reveal reveal-d3">Le vrai site arrive le <strong>mardi 1<sup>er</sup> décembre 2026 à 16 h 25</strong> (heure de l'Est).</p>
-      <p class="countdown reveal reveal-d4" id="countdown" aria-live="polite"></p>
+      <div class="countdown reveal reveal-d4" id="countdown" aria-live="polite">
+        <div class="count-unit"><span class="count-num" id="cd-days">--</span><span class="count-label">Jours</span></div>
+        <div class="count-unit"><span class="count-num" id="cd-hours">--</span><span class="count-label">Heures</span></div>
+        <div class="count-unit"><span class="count-num" id="cd-mins">--</span><span class="count-label">Minutes</span></div>
+        <div class="count-unit"><span class="count-num" id="cd-secs">--</span><span class="count-label">Secondes</span></div>
+      </div>
       <div class="badges reveal reveal-d4">
         <p class="eco-badge"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20 4C11 4 4 8 4 15c0 2 .6 3.6 1.5 5 .4-3.5 2-7 5-9.5C13.5 7.5 17 5.5 20 4Z" fill="#2e9e4f"/><path d="M20 4C11 4 4 8 4 15c0 2 .6 3.6 1.5 5 .4-3.5 2-7 5-9.5C13.5 7.5 17 5.5 20 4Z" stroke="#1e7a38" stroke-width="1.2" stroke-linejoin="round"/><path d="M6 20C9 15 13 11 19 6" stroke="#1e7a38" stroke-width="1.4" stroke-linecap="round"/></svg>100&nbsp;% écologique et québécois</p>
         <p class="made-badge"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 21s-7-4.6-7-10a7 7 0 0 1 14 0c0 5.4-7 10-7 10Z" fill="#fff" opacity="0.9"/><circle cx="12" cy="11" r="2.6" fill="#0072ce"/></svg>Fait maison à Granby, Québec</p>
@@ -358,16 +388,17 @@
         function check() {
           if (Date.now() >= LAUNCH) { window.location.replace('./website_index.html'); }
         }
+        function pad(n) { return String(n).padStart(2, '0'); }
         function countdown() {
-          var el = document.getElementById('countdown');
-          if (!el) { return; }
           var diff = LAUNCH - Date.now();
-          if (diff <= 0) { el.textContent = 'C\'est le moment !'; return; }
-          var days = Math.floor(diff / 86400000);
-          var hours = Math.floor(diff % 86400000 / 3600000);
-          var mins = Math.floor(diff % 3600000 / 60000);
-          var secs = Math.floor(diff % 60000 / 1000);
-          el.textContent = 'Plus que ' + days + ' j ' + hours + ' h ' + mins + ' min ' + secs + ' s';
+          var days = diff > 0 ? Math.floor(diff / 86400000) : 0;
+          var hours = diff > 0 ? Math.floor(diff % 86400000 / 3600000) : 0;
+          var mins = diff > 0 ? Math.floor(diff % 3600000 / 60000) : 0;
+          var secs = diff > 0 ? Math.floor(diff % 60000 / 1000) : 0;
+          document.getElementById('cd-days').textContent = days;
+          document.getElementById('cd-hours').textContent = pad(hours);
+          document.getElementById('cd-mins').textContent = pad(mins);
+          document.getElementById('cd-secs').textContent = pad(secs);
         }
         check();
         countdown();
