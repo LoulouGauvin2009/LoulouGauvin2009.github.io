@@ -333,5 +333,16 @@
         </svg>
       </div>
     </div>
+    <script>
+      // Launch: Tuesday 1 December 2026, 4:25 pm EST — switch to the real site.
+      (function () {
+        var LAUNCH = new Date('2026-12-01T16:25:00-05:00').getTime();
+        function check() {
+          if (Date.now() >= LAUNCH) { window.location.replace('./website_index.html'); }
+        }
+        check();
+        setInterval(check, 30000);
+      })();
+    </script>
   </body>
 </html>
